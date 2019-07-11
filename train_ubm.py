@@ -18,23 +18,28 @@ dest = "universal_model\\"
 speaker_paths = open(source, 'r')
 # train_file = "development_set_enroll.txt"
 features = np.asarray(())
-for speaker in speaker_paths:
-    print('speaker ' + str(speaker))
-    for root, dirs, files in os.walk(str(speaker).replace('\n', '')):
-        count = 0
-        for file in files:
-            if count == 10:
+
+for speaker_path in speaker_paths:
+    count = 0
+    for utter_name in os.listdir(speaker_path):
+        print('uttername :' + str(utter_name))
+        if count == 20:
+            print('uttername break')
+            break
+        for utter_file in os.listdir(os.path.join(speaker_path, utter_name)):
+            if count == 20:
+                print('innermost break')
                 break
-            if file.endswith('.m4a'):
-                file_path = os.path.join(root, file)
-                print('file ' + str(file_path))
-                audio, sr = librosa.core.load(file_path)
-                vector = extract_features(audio, sr)
-                if features.size == 0:
-                    features = vector
-                else:
-                    features = np.vstack((features, vector))
-                count += 1
+            print('utter file ' + str(utter_file))
+            utter_path = os.path.join(os.path.join(speaker_path, utter_name), utter_file)  # path of each utterance
+            print('utter_path'+ str(utter_path))
+            audio, sr = librosa.core.load(utter_path)
+            vector = extract_features(audio, sr)
+            if features.size == 0:
+                features = vector
+            else:
+                features = np.vstack((features, vector))
+            count += 1
 ubm = GaussianMixture(n_components=512, max_iter=200, covariance_type='diag', n_init=3)
 ubm.fit(features)
 
