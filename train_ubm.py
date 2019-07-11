@@ -6,6 +6,7 @@ from scipy.io.wavfile import read
 from sklearn.mixture import GaussianMixture
 from extract_feature import extract_features
 import warnings
+import librosa
 
 warnings.filterwarnings("ignore")
 
@@ -16,13 +17,32 @@ source = r'voice_list.txt'
 dest = "universal_model\\"
 speaker_paths = open(source, 'r')
 # train_file = "development_set_enroll.txt"
+features = np.asarray(())
 for speaker in speaker_paths:
-    print(speaker)
-    for root, dirs, files in os.walk(speaker):
+    for root, dirs, files in os.walk(str(speaker).replace('\n', '')):
+        count = 0
         for file in files:
-            print(file)
-            if file.endswith('.wav'):
-                print(file)
+            if count == 10:
+                continue
+            if file.endswith('.m4a'):
+                file_path = os.path.join(root, file)
+                audio, sr = librosa.core.load(file_path)
+                vector = extract_features(audio, sr)
+                if features.size == 0:
+                    features = vector
+                else:
+                    features = np.vstack((features, vector))
+
+                count += 1
+ubm = GaussianMixture(n_components=512, max_iter=200, covariance_type='diag', n_init=3)
+ubm.fit(features)
+
+# dumping the trained gaussian model
+picklefile = "ubm.gmm"
+pickle.dump(ubm, open(dest + picklefile, 'wb'))
+print('modeling completed for ubm with data point = '+ str(features.shape))
+features = np.asarray(())
+
 # file_paths = []
 # for root, dirs, files in os.walk(source):
 #     for file in files:
