@@ -20,8 +20,9 @@ speaker_paths = open(source, 'r')
 features = np.asarray(())
 
 for speaker_path in speaker_paths:
+    speaker_path = str(speaker_path).replace('\n', '')
     count = 0
-    for utter_name in os.listdir(str(speaker_path).replace('\n', '')):
+    for utter_name in os.listdir(speaker_path):
         print('uttername :' + str(utter_name))
         if count == 20:
             print('uttername break')
