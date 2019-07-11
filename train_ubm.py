@@ -24,7 +24,7 @@ for speaker in speaker_paths:
         count = 0
         for file in files:
             if count == 10:
-                continue
+                break
             if file.endswith('.m4a'):
                 print('file ' + str(file))
                 file_path = os.path.join(root, file)
