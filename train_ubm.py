@@ -19,12 +19,14 @@ speaker_paths = open(source, 'r')
 # train_file = "development_set_enroll.txt"
 features = np.asarray(())
 for speaker in speaker_paths:
+    print('speaker ' + str(speaker))
     for root, dirs, files in os.walk(str(speaker).replace('\n', '')):
         count = 0
         for file in files:
             if count == 10:
                 continue
             if file.endswith('.m4a'):
+                print('file ' + str(file))
                 file_path = os.path.join(root, file)
                 audio, sr = librosa.core.load(file_path)
                 vector = extract_features(audio, sr)
