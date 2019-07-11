@@ -17,8 +17,10 @@ dest = "universal_model\\"
 speaker_paths = open(source, 'r')
 # train_file = "development_set_enroll.txt"
 for speaker in speaker_paths:
+    print(speaker)
     for root, dirs, files in os.walk(speaker):
         for file in files:
+            print(file)
             if file.endswith('.wav'):
                 print(file)
 # file_paths = []
