@@ -1,6 +1,5 @@
 /data/dev/aac/id08702
 /data/dev/aac/id02275
-/data/dev/aac/id01041 
 /data/dev/aac/id08698
 /data/dev/aac/id01662
 /data/dev/aac/id02555 
