@@ -10,37 +10,42 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # path to training data
-source = r'C:\Users\User\Documents\Work\Biometric\development_set'
+source = r'voice_list.txt'
 
 # path where training speakers will be saved
 dest = "universal_model\\"
-
+speaker_paths = open(source, 'r')
 # train_file = "development_set_enroll.txt"
-file_paths = []
-for root, dirs, files in os.walk(source):
-    for file in files:
-        if file.endswith('.wav'):
-            file_paths.append(os.path.join(root, file))
-
-print(len(file_paths))
-features = np.asarray(())
-for wav_file in file_paths:
-    sr, audio = read(wav_file)
-
-    vector = extract_features(audio, sr)
-
-    if features.size == 0:
-        features = vector
-    else:
-        features = np.vstack((features, vector))
-
-ubm = GaussianMixture(n_components=128, max_iter=200, covariance_type='diag', n_init=3)
-ubm.fit(features)
-
-# dumping the trained gaussian model
-picklefile = "ubm.gmm"
-pickle.dump(ubm, open(dest + picklefile, 'wb'))
-print('modeling completed for ubm with data point = '+ str(features.shape))
+for speaker in speaker_paths:
+    for root, dirs, files in os.walk(speaker):
+        for file in files:
+            if file.endswith('.wav'):
+                print(file)
+# file_paths = []
+# for root, dirs, files in os.walk(source):
+#     for file in files:
+#         if file.endswith('.wav'):
+#             file_paths.append(os.path.join(root, file))
+#
+# print(len(file_paths))
+# features = np.asarray(())
+# for wav_file in file_paths:
+#     sr, audio = read(wav_file)
+#
+#     vector = extract_features(audio, sr)
+#
+#     if features.size == 0:
+#         features = vector
+#     else:
+#         features = np.vstack((features, vector))
+#
+# ubm = GaussianMixture(n_components=128, max_iter=200, covariance_type='diag', n_init=3)
+# ubm.fit(features)
+#
+# # dumping the trained gaussian model
+# picklefile = "ubm.gmm"
+# pickle.dump(ubm, open(dest + picklefile, 'wb'))
+# print('modeling completed for ubm with data point = '+ str(features.shape))
 # features = np.asarray(())
 #
 # count = 1
