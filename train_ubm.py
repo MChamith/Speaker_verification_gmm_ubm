@@ -26,15 +26,14 @@ for speaker in speaker_paths:
             if count == 10:
                 break
             if file.endswith('.m4a'):
-                print('file ' + str(file))
                 file_path = os.path.join(root, file)
+                print('file ' + str(file_path))
                 audio, sr = librosa.core.load(file_path)
                 vector = extract_features(audio, sr)
                 if features.size == 0:
                     features = vector
                 else:
                     features = np.vstack((features, vector))
-
                 count += 1
 ubm = GaussianMixture(n_components=512, max_iter=200, covariance_type='diag', n_init=3)
 ubm.fit(features)
