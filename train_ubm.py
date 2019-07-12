@@ -19,38 +19,45 @@ speaker_paths = open(source, 'r')
 # train_file = "development_set_enroll.txt"
 features = np.asarray(())
 
-for speaker_path in speaker_paths:
-    speaker_path = str(speaker_path).replace('\n', '')
-    count = 0
-    try:
-        for utter_name in os.listdir(speaker_path):
-            print('uttername :' + str(utter_name))
-            if count == 10:
-                print('uttername break')
-                break
-            for utter_file in os.listdir(os.path.join(speaker_path, utter_name)):
+
+def create_fetaure_vector():
+    for speaker_path in speaker_paths:
+        speaker_path = str(speaker_path).replace('\n', '')
+        count = 0
+        try:
+            for utter_name in os.listdir(speaker_path):
+                print('uttername :' + str(utter_name))
                 if count == 10:
-                    print('innermost break')
+                    print('uttername break')
                     break
-                print('utter file ' + str(utter_file))
-                utter_path = os.path.join(os.path.join(speaker_path, utter_name), utter_file)  # path of each utterance
-                print('utter_path' + str(utter_path))
-                audio, sr = librosa.core.load(utter_path)
-                vector = extract_features(audio, sr)
-                if features.size == 0:
-                    features = vector
-                else:
-                    features = np.vstack((features, vector))
-                count += 1
-    except FileNotFoundError:
-        pass
-ubm = GaussianMixture(n_components=512, max_iter=200, covariance_type='diag', n_init=3)
+                for utter_file in os.listdir(os.path.join(speaker_path, utter_name)):
+                    if count == 10:
+                        print('innermost break')
+                        break
+                    print('utter file ' + str(utter_file))
+                    utter_path = os.path.join(os.path.join(speaker_path, utter_name),
+                                              utter_file)  # path of each utterance
+                    print('utter_path' + str(utter_path))
+                    audio, sr = librosa.core.load(utter_path)
+                    vector = extract_features(audio, sr)
+                    if features.size == 0:
+                        features = vector
+                    elif features.size == 1000:
+                        return
+                    else:
+                        features = np.vstack((features, vector))
+                    count += 1
+        except FileNotFoundError:
+            pass
+
+
+ubm = GaussianMixture(n_components=1024, max_iter=200, covariance_type='diag', n_init=3)
 ubm.fit(features)
 
 # dumping the trained gaussian model
 picklefile = "ubm.gmm"
 pickle.dump(ubm, open(dest + picklefile, 'wb'))
-print('modeling completed for ubm with data point = '+ str(features.shape))
+print('modeling completed for ubm with data point = ' + str(features.shape))
 features = np.asarray(())
 
 # file_paths = []
