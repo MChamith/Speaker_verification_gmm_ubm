@@ -47,6 +47,7 @@ def create_fetaure_vector():
                         return features
                     else:
                         features = np.vstack((features, vector))
+                        print('feature count ' + str(features.size))
                     count += 1
         except FileNotFoundError:
             pass
