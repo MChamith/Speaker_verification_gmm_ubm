@@ -25,11 +25,11 @@ for speaker_path in speaker_paths:
     try:
         for utter_name in os.listdir(speaker_path):
             print('uttername :' + str(utter_name))
-            if count == 20:
+            if count == 10:
                 print('uttername break')
                 break
             for utter_file in os.listdir(os.path.join(speaker_path, utter_name)):
-                if count == 20:
+                if count == 10:
                     print('innermost break')
                     break
                 print('utter file ' + str(utter_file))
