@@ -43,7 +43,8 @@ def create_fetaure_vector():
                     if features.size == 0:
                         features = vector
                     elif features.size == 1000:
-                        return
+                        print('features size 1000')
+                        return features
                     else:
                         features = np.vstack((features, vector))
                     count += 1
