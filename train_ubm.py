@@ -17,10 +17,10 @@ source = r'voice_list.txt'
 dest = "universal_model\\"
 speaker_paths = open(source, 'r')
 # train_file = "development_set_enroll.txt"
-features = np.asarray(())
 
 
 def create_fetaure_vector():
+    features = np.asarray(())
     for speaker_path in speaker_paths:
         speaker_path = str(speaker_path).replace('\n', '')
         count = 0
@@ -49,9 +49,10 @@ def create_fetaure_vector():
                     count += 1
         except FileNotFoundError:
             pass
+    return features
 
 
-create_fetaure_vector()
+features = create_fetaure_vector()
 ubm = GaussianMixture(n_components=1024, max_iter=200, covariance_type='diag', n_init=3)
 ubm.fit(features)
 
