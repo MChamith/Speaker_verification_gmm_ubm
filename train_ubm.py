@@ -8,14 +8,16 @@ from extract_feature import extract_features
 import warnings
 import librosa
 
+np_load_old = np.load
 warnings.filterwarnings("ignore")
 
 # path to training data
-source = r'voice_list.txt'
-
+source = r'timit_list.txt'
+np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
 # path where training speakers will be saved
-dest = "universal_model\\"
-features = np.load('features/feature_vector_500.npy')
+dest = "timit_universal/"
+features = np.load('timit_features/feature_vector_500.npy')
+print('shape ' + str(features.shape))
 ubm = GaussianMixture(n_components=512, max_iter=100, covariance_type='diag', n_init=3, verbose=1)
 ubm.fit(features)
 # dumping the trained gaussian model

@@ -1,0 +1,2 @@
+/home/chamith/Documents/Work/Speech/timit_train
+
