@@ -1,2 +1,3 @@
-/home/chamith/Documents/Work/Speech/timit_train
+/home/ubuntu/volume/data/lisa/data/timit/raw/TIMIT
+
 
