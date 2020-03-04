@@ -59,7 +59,7 @@ print(min(ubm_para))
 source = 'Users/'
 # ubm = open('universal_model/ubm.gmm', 'rb')
 features = np.asarray(())
-count = 1
+count = 0
 model_count = 0
 for wav_file in file_paths:
     path = wav_file.strip()
@@ -76,8 +76,8 @@ for wav_file in file_paths:
     else:
         features = np.vstack((features, vector))
     # when features of 5 files of speaker are concatenated, then do model training
-    if count == 34:
-        print('path at 34 ' + str(path))
+    if count == 2500:
+        print('path at 2500 ' + str(path))
         ubm = copy.deepcopy(ubm)
         gmm = map_adaptation(ubm, features, max_iterations=100, relevance_factor=16)
         # gmm = GaussianMixture(n_components=16, max_iter=200, covariance_type='diag', n_init=3)
