@@ -7,7 +7,7 @@ for i in range(10):
         for file in filenames:
             print(file)
             if file.endswith('.wav'):
-                number = file.split('/')[-2]
+                # number = file.split('/')[-2]
                 path = os.path.join(root, file)
                 with open('development_set_enroll.txt', 'a') as fw:
                     fw.write(path + '\n')
