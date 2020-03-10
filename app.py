@@ -1,17 +1,16 @@
 import os
 import shutil
 
-for i in range(10):
-    count = 0
-    for root, dirs, filenames in os.walk('/home/ubuntu/volume/AudioMNIST/ByNumber/' + str(i)):
-        for file in filenames:
-            print('file ' + str(file) + 'count ' + str(count))
-            if file.endswith('.wav'):
-                # number = file.split('/')[-2]
-                if count > 2500:
-                    path = os.path.join(root, file)
-                    with open('development_set_test.txt', 'a') as fw:
-                        fw.write(path + '\n')
+for root, dirs, filenames in os.walk('/home/ubuntu/volume/libri/LibriSpeech/train-clean-100' + str(i)):
+    for file in filenames:
+        # print('file ' + str(file) + 'count ' + str(count))
+        if file.endswith('.flac'):
+            # number = file.split('/')[-2]
+            # if count > 2500:
+            #     path = os.path.join(root, file)
+            #     with open('development_set_test.txt', 'a') as fw:
+            #         fw.write(path + '\n')
+            path = os.path.join(root, file)
+            shutil.move(path, '/home/ubuntu/volume/libri/LibriSpeech/audio/'+ str(file))
 
-                count += 1
 
