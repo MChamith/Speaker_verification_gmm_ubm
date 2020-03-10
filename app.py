@@ -1,7 +1,7 @@
 import os
 import shutil
 
-for root, dirs, filenames in os.walk('/home/ubuntu/volume/libri/LibriSpeech/train-clean-100' + str(i)):
+for root, dirs, filenames in os.walk('/home/ubuntu/volume/libri/LibriSpeech/train-clean-100'):
     for file in filenames:
         # print('file ' + str(file) + 'count ' + str(count))
         if file.endswith('.flac'):
