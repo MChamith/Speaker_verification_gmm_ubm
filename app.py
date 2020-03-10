@@ -8,9 +8,10 @@ for i in range(10):
             print('file ' + str(file) + 'count ' + str(count))
             if file.endswith('.wav'):
                 # number = file.split('/')[-2]
-                if count == 2500:
-                    break
-                path = os.path.join(root, file)
-                with open('development_set_enroll.txt', 'a') as fw:
-                    fw.write(path + '\n')
-                    count +=1
+                if count > 2500:
+                    path = os.path.join(root, file)
+                    with open('development_set_test.txt', 'a') as fw:
+                        fw.write(path + '\n')
+
+                count += 1
+
