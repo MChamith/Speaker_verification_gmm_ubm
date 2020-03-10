@@ -78,14 +78,14 @@ for wav_file in file_paths:
     # when features of 5 files of speaker are concatenated, then do model training
     if count == 2500:
         print('path at 2500 ' + str(path))
-        ubm = copy.deepcopy(ubm)
-        gmm = map_adaptation(ubm, features, max_iterations=100, relevance_factor=16)
-        # gmm = GaussianMixture(n_components=16, max_iter=200, covariance_type='diag', n_init=3)
-        # gmm.fit(features)
-
-        # dumping the trained gaussian model
+        # ubm = copy.deepcopy(ubm)
+        # gmm = map_adaptation(ubm, features, max_iterations=100, relevance_factor=16)
+        # # gmm = GaussianMixture(n_components=16, max_iter=200, covariance_type='diag', n_init=3)
+        # # gmm.fit(features)
+        #
+        # # dumping the trained gaussian model
         picklefile = str(model_count) + ".gmm"
-        pickle.dump(gmm, open(dest + picklefile, 'wb'))
+        # pickle.dump(gmm, open(dest + picklefile, 'wb'))
         print('+ modeling completed for speaker:', picklefile, " with data point = ", features.shape)
         features = np.asarray(())
         model_count +=1
