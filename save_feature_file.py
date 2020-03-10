@@ -46,11 +46,11 @@ def create_fetaure_vector():
                 # print('utter file ' + str(utter_name))
                 for file in filename:
                     print(file)
-                    if file.endswith('WAV'):
+                    if file.endswith('wav'):
                         utter_path = os.path.join(root, file)
 
                         print('utter_path' + str(utter_path))
-                        audio, sr = librosa.core.load(utter_path, 8000)
+                        audio, sr = librosa.core.load(utter_path, 16000)
                         intervals = librosa.effects.split(audio, top_db=10)
                         vector = extract_features(audio, sr)
                         # for interval in intervals:
@@ -75,7 +75,7 @@ def create_fetaure_vector():
 # print('saving feature vector')
 mfcc_features = create_fetaure_vector()
 # print(mfcc_features.shape)
-np.save('timit_features/feature_vector_500.npy', mfcc_features)
+np.save('libri_features/feature_vector_500.npy', mfcc_features)
 
 # audio, sr = librosa.core.load('/home/chamith/Downloads/spoken-digit-dataset/free-spoken-digit-dataset-master/recordings/1/1_jackson_49.wav', 16000)
 # intervals = librosa.effects.split(audio, top_db=20)
