@@ -66,28 +66,28 @@ for wav_file in file_paths:
     # print(path)
 
     # read the audio
-    # audio, sr = librosa.load(path, 8000)
-    # # print('shape ' + str(audio.shape))
-    # # extract 40 dimensional MFCC & delta MFCC features
-    # vector = extract_features(audio, sr)
-    #
-    # if features.size == 0:
-    #     features = vector
-    # else:
-    #     features = np.vstack((features, vector))
+    audio, sr = librosa.load(path, 8000)
+    # print('shape ' + str(audio.shape))
+    # extract 40 dimensional MFCC & delta MFCC features
+    vector = extract_features(audio, sr)
+
+    if features.size == 0:
+        features = vector
+    else:
+        features = np.vstack((features, vector))
     # when features of 5 files of speaker are concatenated, then do model training
     if count == 2500:
         print('path at 2500 ' + str(path))
-        # ubm = copy.deepcopy(ubm)
-        # gmm = map_adaptation(ubm, features, max_iterations=100, relevance_factor=16)
-        # # gmm = GaussianMixture(n_components=16, max_iter=200, covariance_type='diag', n_init=3)
-        # # gmm.fit(features)
-        #
-        # # dumping the trained gaussian model
+        ubm = copy.deepcopy(ubm)
+        gmm = map_adaptation(ubm, features, max_iterations=100, relevance_factor=16)
+        # gmm = GaussianMixture(n_components=16, max_iter=200, covariance_type='diag', n_init=3)
+        # gmm.fit(features)
+
+        # dumping the trained gaussian model
         picklefile = str(model_count) + ".gmm"
-        # pickle.dump(gmm, open(dest + picklefile, 'wb'))
+        pickle.dump(gmm, open(dest + picklefile, 'wb'))
         print('+ modeling completed for speaker:', picklefile, " with data point = ", features.shape)
-        # features = np.asarray(())
+        features = np.asarray(())
         model_count +=1
         count = 0
     count = count + 1
