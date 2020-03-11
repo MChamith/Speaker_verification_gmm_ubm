@@ -15,8 +15,8 @@ warnings.filterwarnings("ignore")
 source = r'timit_list.txt'
 np.load = lambda *a,**k: np_load_old(*a, allow_pickle=True, **k)
 # path where training speakers will be saved
-dest = "timit_universal/"
-features = np.load('timit_features/feature_vector_500.npy')
+dest = "libri_universal/"
+features = np.load('libri_features/feature_vector_500.npy')
 print('shape ' + str(features.shape))
 ubm = GaussianMixture(n_components=512, max_iter=100, covariance_type='diag', n_init=3, verbose=1)
 ubm.fit(features)
