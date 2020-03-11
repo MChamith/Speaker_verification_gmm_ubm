@@ -24,10 +24,10 @@ def create_fetaure_vector():
     features = np.asarray(())
     print('features size ' + str(features.size))
     speaker_num = 0
+    count = 0
     for speaker_path in speaker_paths:
         speaker_path = str(speaker_path).replace('\n', '')
         print('speaker path ' + str(speaker_path))
-        count = 0
         try:
             for root, dirs, filename in os.walk(str(speaker_path)):
                 # print('uttername :' + str(utter_name))
@@ -47,24 +47,26 @@ def create_fetaure_vector():
                 for file in filename:
                     print(file)
                     if file.endswith('wav'):
-                        utter_path = os.path.join(root, file)
+                        if count %20 == 0:
 
-                        print('utter_path' + str(utter_path))
-                        audio, sr = librosa.core.load(utter_path, 16000)
-                        intervals = librosa.effects.split(audio, top_db=10)
-                        vector = extract_features(audio, sr)
-                        # for interval in intervals:
-                        #     partial_vec = extract_features(audio, sr)
-                        #     print('partial vec size  ' + str(partial_vec.size))
-                        #     vector.append(partial_vec)
+                            utter_path = os.path.join(root, file)
 
-                        if features.size == 0:
-                            features = vector
-                        else:
-                            print('features shape ' + str(features.shape))
-                            print('vector shape ' + str(np.array(vector).shape))
-                            features = np.vstack((features, vector))
-                            print('feature count ' + str(features.size))
+                            print('utter_path' + str(utter_path))
+                            audio, sr = librosa.core.load(utter_path, 16000)
+                            intervals = librosa.effects.split(audio, top_db=10)
+                            vector = extract_features(audio, sr)
+                            # for interval in intervals:
+                            #     partial_vec = extract_features(audio, sr)
+                            #     print('partial vec size  ' + str(partial_vec.size))
+                            #     vector.append(partial_vec)
+
+                            if features.size == 0:
+                                features = vector
+                            else:
+                                print('features shape ' + str(features.shape))
+                                print('vector shape ' + str(np.array(vector).shape))
+                                features = np.vstack((features, vector))
+                                print('feature count ' + str(features.size))
                         count += 1
         except FileNotFoundError:
             print('no file found')
