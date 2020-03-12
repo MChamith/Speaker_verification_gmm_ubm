@@ -50,44 +50,55 @@ def map_adaptation(gmm, data, max_iterations=300, likelihood_threshold=1e-20, re
     return gmm
 
 
-speakers_path = 'development_set_enroll.txt'
-dest = 'digit_models/'
+speakers_path = '/home/ubuntu/volume/speechcommands/validation_list.txt'
+dest = 'command_models/'
 file_paths = open(speakers_path, 'r')
-ubm = pickle.load(open('timit_universal/ubm_512_100iter.gmm', 'rb'))
+file_paths = file_paths.readlines()
+ubm = pickle.load(open('libri_universal/ubm_512_100iter.gmm', 'rb'))
 ubm_para = ubm.weights_
 print(min(ubm_para))
 source = 'Users/'
 # ubm = open('universal_model/ubm.gmm', 'rb')
 features = np.asarray(())
-count = 0
-model_count = 0
-for wav_file in file_paths:
-    path = wav_file.strip()
-    # print(path)
+# count = 0
+# model_count = 0
 
+prev_phrase = str(file_paths[0].strip('\n').split('/')[0])
+print('first prev ' + str(prev_phrase))
+next_phrase = ''
+for wav_file in file_paths:
+    path = '/home/ubuntu/volume/speechcommands/'+ str(wav_file)
+    # print(path)
+    next_phrase = wav_file.strip('/n').split('/')[0]
+    print(wav_file)
     # read the audio
-    audio, sr = librosa.load(path, 8000)
+    audio, sr = librosa.load(path, 16000)
     # print('shape ' + str(audio.shape))
     # extract 40 dimensional MFCC & delta MFCC features
     vector = extract_features(audio, sr)
 
-    if features.size == 0:
-        features = vector
+    if next_phrase == prev_phrase:
+        if features.size == 0:
+            features = vector
+        else:
+            features = np.vstack((features, vector))
+        # when features of 5 files of speaker are concatenated, then do model training
+        print('prev phrase ' +str(prev_phrase) +' next phrase ' + str(next_phrase))
+        prev_phrase = next_phrase
     else:
-        features = np.vstack((features, vector))
-    # when features of 5 files of speaker are concatenated, then do model training
-    if count == 2500:
-        print('path at 2500 ' + str(path))
+        # print('path at 2500 ' + str(path))
         ubm = copy.deepcopy(ubm)
         gmm = map_adaptation(ubm, features, max_iterations=100, relevance_factor=16)
         # gmm = GaussianMixture(n_components=16, max_iter=200, covariance_type='diag', n_init=3)
         # gmm.fit(features)
 
         # dumping the trained gaussian model
-        picklefile = str(model_count) + ".gmm"
+        print('prev phrase ' + str(prev_phrase) + ' next phrase ' + str(next_phrase))
+        picklefile = str(prev_phrase) + ".gmm"
         pickle.dump(gmm, open(dest + picklefile, 'wb'))
-        print('+ modeling completed for speaker:', picklefile, " with data point = ", features.shape)
-        features = np.asarray(())
-        model_count +=1
-        count = 0
-    count = count + 1
+        print('+ modeling completed for speaker:' + str(picklefile))
+        features = vector
+        prev_phrase = next_phrase
+        # model_count +=1
+        # count = 0
+    # count = count + 1
