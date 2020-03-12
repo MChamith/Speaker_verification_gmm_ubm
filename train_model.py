@@ -67,6 +67,7 @@ prev_phrase = str(file_paths[0].strip('\n').split('/')[0])
 print('first prev ' + str(prev_phrase))
 next_phrase = ''
 for wav_file in file_paths:
+    wav_file = wav_file.strip('/n')
     path = '/home/ubuntu/volume/speechcommands/'+ str(wav_file)
     # print(path)
     next_phrase = wav_file.strip('/n').split('/')[0]
