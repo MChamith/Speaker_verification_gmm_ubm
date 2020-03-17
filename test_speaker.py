@@ -68,7 +68,6 @@ for path in file_paths:
 
     winner = np.argmax(log_likelihood)
     print("\t" +str(speaker)+ "detected as - "+ str(speakers[winner]) )
-    time.sleep(1.0)
     if speaker == str(speakers[winner]):
         correct +=1
         print('correct')
