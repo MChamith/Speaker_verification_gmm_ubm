@@ -13,9 +13,9 @@ import time
 # path to training data
 # source = "Users\\"
 
-modelpath = "digit_models/"
+modelpath = "command_models/"
 
-test_file = "development_set_test.txt"
+test_file = "/home/ubuntu/volume/speechcommands/testing_list.txt"
 
 file_paths = open(test_file, 'r')
 
@@ -26,15 +26,16 @@ gmm_files = [os.path.join(modelpath, fname) for fname in
 models = [pickle.load(open(fname, 'rb')) for fname in gmm_files]
 speakers = [fname.split("/")[-1].split(".gmm")[0] for fname
             in gmm_files]
-ubm = pickle.load(open('timit_universal/ubm_512_100iter.gmm', 'rb'))
+ubm = pickle.load(open('libri_universal/ubm_512_100iter.gmm', 'rb'))
 # Read the test directory and get the list of test audio files
 correct = 0
 count = 0
 wrong = 0
 for path in file_paths:
-    speaker = path.split('/')[-2]
-    speaker = int(speaker)
-    path = path.strip()
+    speaker = path.strip('\n').split('/')[0]
+    speaker = str(speaker)
+
+    path = '/home/ubuntu/volume/speechcommands/'+str(path.strip('\n'))
     print(path)
     audio, sr = librosa.load(path)
     vector = extract_features(audio, sr)
