@@ -31,6 +31,8 @@ ubm = pickle.load(open('libri_universal/ubm_512_100iter.gmm', 'rb'))
 correct = 0
 count = 0
 wrong = 0
+with open('result.csv', 'a') as fw:
+    fw.write('Expected,Result\n')
 for path in file_paths:
     speaker = path.strip('\n').split('/')[0]
     speaker = str(speaker)
@@ -68,6 +70,8 @@ for path in file_paths:
 
     winner = np.argmax(log_likelihood)
     print("\t" +str(speaker)+ "detected as - "+ str(speakers[winner]) )
+    with open('result.csv', 'a') as fw:
+        fw.write(str(speaker)+','+str(speakers[winner])+ '\n')
     if speaker == str(speakers[winner]):
         correct +=1
         print('correct')
@@ -75,6 +79,9 @@ for path in file_paths:
         wrong +=1
         print('wrong')
     count += 1
+
+with open('result.csv', 'a') as fw:
+    fw.write('correct = '+ str(correct)+',wrong = '+ str(wrong) +'correct% =' +str(correct/count) +',wrong%= '+ str(wrong/count))
 
 print('correct: ' + str(correct))
 print('wrong ' + str(wrong))
